@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registro</title>
+</head>
+<body>
+    <h2>Registro de Usuario</h2>
+    <form id="registerForm">
+        <input type="email" id="email" placeholder="Email" required><br><br>
+        <input type="password" id="password" placeholder="Contraseña" required><br><br>
+        <button type="submit">Registrarse</button>
+    </form>
+    <p id="message"></p>
+    <a href="/user/login">Ir a Login</a>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch('/user/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (response.ok) {
+                document.getElementById('message').innerText = "Usuario creado! Puedes iniciar sesión.";
+            } else {
+                const data = await response.json();
+                document.getElementById('message').innerText = "Error: " + JSON.stringify(data);
+            }
+        });
+    </script>
+</body>
+</html>

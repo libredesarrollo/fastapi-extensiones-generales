@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Bienvenido al Dashboard</h1>
+    <p>Solo usuarios autenticados deberían ver esto (validado por frontend).</p>
+    <button onclick="logout()">Cerrar Sesión</button>
+
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = "/login";
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            // Opcional: Llamar al endpoint de logout del backend
+            fetch('/user/auth/jwt/logout', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token }
+            }).then(() => window.location.href = "/login");
+        }
+    </script>
+</body>
+</html>
