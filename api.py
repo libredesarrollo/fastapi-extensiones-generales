@@ -6,6 +6,7 @@ from database.database import Base, engine, get_database_session
 
 from myemail import email_router
 from myuser import auth_router
+from myenv import env_router
 
 app = FastAPI()
 router = APIRouter()
@@ -19,3 +20,4 @@ router = APIRouter()
 
 app.include_router(email_router, prefix='/email')
 app.include_router(auth_router, prefix='/user')
+app.include_router(env_router, prefix='/config')

@@ -1,5 +1,5 @@
 import uuid
-from typing import Optional, AsyncGenerator
+from typing import  AsyncGenerator
 
 from fastapi import APIRouter, Depends, Request
 from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin, schemas
@@ -8,9 +8,6 @@ from fastapi_users.authentication import (
     BearerTransport,
     JWTStrategy,
 )
-
-
-#"fastapi-users" "fastapi-users[sqlalchemy]"
 
 from fastapi_users.db import SQLAlchemyUserDatabase, SQLAlchemyBaseUserTableUUID
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
