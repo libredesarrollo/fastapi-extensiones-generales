@@ -11,7 +11,7 @@ app = FastAPI()
 router = APIRouter()
 
 #QUITAR SI USAS Alembic
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 # @router.get('/hello')
 # def hello_world(db: Session = Depends(get_database_session)):
