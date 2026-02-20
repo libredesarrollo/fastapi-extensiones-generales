@@ -9,6 +9,8 @@ from myuser import auth_router
 from myenv import env_router
 from mylimiter import limiter_router
 
+#uvicorn api:app --reload     
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # --- INICIO (Infrastructure Setup) ---
