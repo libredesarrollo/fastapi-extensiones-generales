@@ -1,0 +1,173 @@
+2026-02-22 07:59:51 | ERROR    | mylogging:log_error:50 - ¡Ocurrió un error! Se intentó dividir por cero.
+Traceback (most recent call last):
+
+  File "<string>", line 1, in <module>
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python313\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+               │     │   └ 348
+               │     └ 3
+               └ <function _main at 0x000001D6A6F8BB00>
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python313\Lib\multiprocessing\spawn.py", line 135, in _main
+    return self._bootstrap(parent_sentinel)
+           │    │          └ 348
+           │    └ <function BaseProcess._bootstrap at 0x000001D6A6C936A0>
+           └ <SpawnProcess name='SpawnProcess-1' parent=47500 started>
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python313\Lib\multiprocessing\process.py", line 313, in _bootstrap
+    self.run()
+    │    └ <function BaseProcess.run at 0x000001D6A6C92C00>
+    └ <SpawnProcess name='SpawnProcess-1' parent=47500 started>
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python313\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    │    │        │    │        │    └ {'config': <uvicorn.config.Config object at 0x000001D6A9076CF0>, 'target': <bound method Server.run of <uvicorn.server.Server...
+    │    │        │    │        └ <SpawnProcess name='SpawnProcess-1' parent=47500 started>
+    │    │        │    └ ()
+    │    │        └ <SpawnProcess name='SpawnProcess-1' parent=47500 started>
+    │    └ <function subprocess_started at 0x000001D6A913D6C0>
+    └ <SpawnProcess name='SpawnProcess-1' parent=47500 started>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+    │              └ [<socket.socket fd=580, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>]
+    └ <bound method Server.run of <uvicorn.server.Server object at 0x000001D6A9076E40>>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x000001D6A90DE160>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x000001D6A9076CF0>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x000001D6A9076E40>
+           │           │    │             └ [<socket.socket fd=580, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>]
+           │           │    └ <function Server.serve at 0x000001D6A913C9A0>
+           │           └ <uvicorn.server.Server object at 0x000001D6A9076E40>
+           └ <function run at 0x000001D6A6F8CCC0>
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x000001D6A6AA7840>
+           │      └ <function Runner.run at 0x000001D6A8E35760>
+           └ <asyncio.runners.Runner object at 0x000001D6A9077A10>
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packa...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x000001D6A8E332E0>
+           │    └ <_WindowsSelectorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x000001D6A9077A10>
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 706, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x000001D6A8E33240>
+    └ <_WindowsSelectorEventLoop running=True closed=False debug=False>
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 677, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x000001D6A8E35080>
+    └ <_WindowsSelectorEventLoop running=True closed=False debug=False>
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2034, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x000001D6A8967EC0>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000001D6AD2CA320>()>
+  File "C:\Users\andre\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000001D6AD2CA320>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000001D6AD2CA320>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000001D6AD2CA320>()>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 410, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+                   └ <uvicorn.middleware.proxy_headers.ProxyHeadersMiddleware object at 0x000001D6AD33CEC0>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+                 │    │   │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD3856D0>>
+                 │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD385...
+                 │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8000), 'cl...
+                 │    └ <fastapi.applications.FastAPI object at 0x000001D6AD20BCB0>
+                 └ <uvicorn.middleware.proxy_headers.ProxyHeadersMiddleware object at 0x000001D6AD33CEC0>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\fastapi\applications.py", line 1134, in __call__
+    await super().__call__(scope, receive, send)
+                           │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD3856D0>>
+                           │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD385...
+                           └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8000), 'cl...
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+          │    │                │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD3856D0>>
+          │    │                │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD385...
+          │    │                └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8000), 'cl...
+          │    └ <starlette.middleware.errors.ServerErrorMiddleware object at 0x000001D6AD33D940>
+          └ <fastapi.applications.FastAPI object at 0x000001D6AD20BCB0>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+          │    │   │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x000001D6A9163F60>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD385...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8000), 'cl...
+          │    └ <starlette.middleware.exceptions.ExceptionMiddleware object at 0x000001D6AD33D7F0>
+          └ <starlette.middleware.errors.ServerErrorMiddleware object at 0x000001D6AD33D940>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+          │                            │    │    │     │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x000001D6A9163F60>
+          │                            │    │    │     │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD385...
+          │                            │    │    │     └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8000), 'cl...
+          │                            │    │    └ <starlette.requests.Request object at 0x000001D6AD323D90>
+          │                            │    └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x000001D6AD33D6A0>
+          │                            └ <starlette.middleware.exceptions.ExceptionMiddleware object at 0x000001D6AD33D7F0>
+          └ <function wrap_app_handling_exceptions at 0x000001D6AA1A5F80>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+          │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x000001D6AD37D3A0>
+          │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD385...
+          │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8000), 'cl...
+          └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x000001D6AD33D6A0>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x000001D6AD37D3A0>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD385...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8000), 'cl...
+          │    └ <fastapi.routing.APIRouter object at 0x000001D6AD26CC50>
+          └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x000001D6AD33D6A0>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+          │    │                │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x000001D6AD37D3A0>
+          │    │                │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD385...
+          │    │                └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8000), 'cl...
+          │    └ <bound method Router.app of <fastapi.routing.APIRouter object at 0x000001D6AD26CC50>>
+          └ <fastapi.routing.APIRouter object at 0x000001D6AD26CC50>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+          │     │      │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x000001D6AD37D3A0>
+          │     │      │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD385...
+          │     │      └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8000), 'cl...
+          │     └ <function Route.handle at 0x000001D6AA1A7740>
+          └ APIRoute(path='/logging/error', name='log_error', methods=['GET'])
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x000001D6AD37D3A0>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD385...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8000), 'cl...
+          │    └ <function request_response.<locals>.app at 0x000001D6AD37CC20>
+          └ APIRoute(path='/logging/error', name='log_error', methods=['GET'])
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\fastapi\routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+          │                            │    │        │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x000001D6AD37D3A0>
+          │                            │    │        │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD385...
+          │                            │    │        └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8000), 'cl...
+          │                            │    └ <starlette.requests.Request object at 0x000001D6AD385950>
+          │                            └ <function request_response.<locals>.app.<locals>.app at 0x000001D6AD37D4E0>
+          └ <function wrap_app_handling_exceptions at 0x000001D6AA1A5F80>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+          │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x000001D6AD37D760>
+          │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.h11_impl.RequestResponseCycle object at 0x000001D6AD385...
+          │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8000), 'cl...
+          └ <function request_response.<locals>.app.<locals>.app at 0x000001D6AD37D4E0>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\fastapi\routing.py", line 105, in app
+    response = await f(request)
+                     │ └ <starlette.requests.Request object at 0x000001D6AD385950>
+                     └ <function get_request_handler.<locals>.app at 0x000001D6AD37CAE0>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\fastapi\routing.py", line 424, in app
+    raw_response = await run_endpoint_function(
+                         └ <function run_endpoint_function at 0x000001D6AA1C1B20>
+  File "c:\Users\andre\Desktop\proy\fastapi\paquetes\.venv\Lib\site-packages\fastapi\routing.py", line 312, in run_endpoint_function
+    return await dependant.call(**values)
+                 │         │      └ {}
+                 │         └ <function log_error at 0x000001D6AD34A3E0>
+                 └ Dependant(path_params=[], query_params=[], header_params=[], cookie_params=[], body_params=[], dependencies=[], name=None, ca...
+
+> File "C:\Users\andre\Desktop\proy\fastapi\paquetes\mylogging.py", line 47, in log_error
+    1 / 0
+
+ZeroDivisionError: division by zero

@@ -1,0 +1,341 @@
+<p>
+    Definir datos de ejemplo para nuestras peticiones es una excelente idea, ya que nos permite probar rápidamente la aplicación durante la fase de implementación. Hasta el momento, contábamos con información generada automáticamente por FastAPI, pero ahora vamos a aprender cómo personalizar esos campos.
+</p>
+<p>
+    Para estos primeros ejercicios, utilizaremos el modelo de Pydantic llamado Task para definir estos ejemplos.
+</p>
+<p id="p_1739823078982_762735">
+    Poder configurar algunos datos de prueba es ideal cuando nuestras entidades van creciendo de tamaño; con esto, ganamos unos pocos segundos cada vez que realizamos pruebas en la API mediante la documentación automática.
+</p>
+<h2 id="heading-0-1768771972041-189">
+    Configuración del Modelo con model_config
+</h2>
+<p>
+    (Nota: En Pydantic v2, `model_config` es la forma recomendada de configurar modelos, reemplazando la clase `Config` interna de Pydantic v1 para la mayoría de los ajustes, aunque `Config.from_attributes = True` sigue siendo la forma de habilitar el modo de atribución para compatibilidad con ORMs.)
+</p>
+<p>
+    Para definir estos datos, debemos añadir una configuración especial dentro de nuestra clase. La sintaxis utiliza model_config y el campo json_schema_extra. Sigue este esquema:
+</p>
+<ul>
+    <li>
+        <strong>model_config</strong>: Se utiliza para las configuraciones del modelo.
+    </li>
+    <li>
+        <strong>json_schema_extra</strong>: Es un diccionario donde extenderemos el esquema JSON.
+    </li>
+    <li>
+        <strong>examples</strong>: Es una lista donde definiremos los ejemplos de la data que queremos mostrar.
+    </li>
+</ul>
+<h3 id="heading-1-1768771972041-350">
+    Implementación con model_config
+</h3>
+<p id="p_1739823078982_590131">
+    Definimos cada uno de los campos que tiene nuestra clase: el id, el name, una description y el status. También podemos definir valores para las etiquetas (tags) pasando un arreglo con ejemplos como "tag 1" y "tag 2".
+</p>
+<p id="p_1739823078982_584586">
+    models.py
+</p>
+<pre><code class="language-python">class Task(MyBaseModel):
+    ***
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                "id" : 123,
+                "name": "Salvar al mundo",
+                "description": "Hola Mundo Desc",
+                "status": StatusType.PENDING,
+                "tag":["tag 1", "tag 2"],
+            ]
+        }
+    }</code></pre>
+<p>
+    Es importante recordar que cuando se utiliza un Enum (como `StatusType.PENDING`) en los ejemplos de `json_schema_extra`, se debe proporcionar el valor real del Enum (generalmente su valor de cadena o entero, según la definición del Enum) que se espera en el JSON. En este caso, asumimos que `StatusType.PENDING` se serializa a la cadena 'PENDING'.
+</p>
+<p>
+    Como puedes ver, definimos cada uno de los campos que tiene nuestra clase: el id, el name, la description y el <strong>status</strong> (usando nuestro <strong>StatusType</strong>). También incluimos las etiquetas en formato de array. Por supuesto, todos estos valores los puedes personalizar totalmente a tu gusto.
+</p>
+<p id="p_1739823078982_974678">
+    Con esto, veremos desde la documentación al momento de crear (o procesos similares) el formato definido anteriormente:
+</p>
+<p>
+    <img src="/images/example/libros/fastapi/image2.png" alt="" title="" id="img_1739823078982_595999">
+</p>
+<p>
+    Figura 5-1 Dato ejemplo en el body
+</p>
+<h3 id="heading-2-1768771972041-715">
+    Definición de Relaciones en los Datos de Ejemplo
+</h3>
+<p>
+    ¿Y qué pasa con las relaciones, como por ejemplo la de categoría? También podemos definirlas fácilmente dentro de nuestro esquema de ejemplos.
+</p>
+<p>
+    Para hacerlo, simplemente añadimos el nombre del campo (en este caso, categoría) y definimos internamente otro diccionario con sus atributos. Por ejemplo, podemos asignarle un id como 123 y un nombre como "cate 1".
+</p>
+<p id="p_1739823078982_216192">
+    Si existen relaciones en la entidad, como lo es en nuestro caso con la relación de tareas basta especificarlas como puedes ver en el siguiente ejemplo:
+</p>
+<p id="p_1739823078982_362977">
+    models.py
+</p>
+<pre><code class="language-python">class Task(MyBaseModel):
+    ***
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                "id" : 123,
+                "name": "Salvar al mundo",
+                "description": "Hola Mundo Desc",
+                "status": StatusType.PENDING,
+                "tag":["tag 1", "tag 2"],
+                "category": {
+                    "id":1234,
+                    "name":"Cate 1"
+                },
+                "user": {
+                    "id":12,
+                    "name":"Andres",
+                    "email":"admin@admin.com",
+                    "surname":"Cruz",
+                    "website":"http://desarrollolibre.net",
+                }
+                }
+            ]
+        }
+    }</code></pre>
+<p>
+    Siguiendo la misma lógica, como puedes apreciar en el código anterior, podemos agregar los datos para el objeto de usuario. &nbsp;Recuerda que puedes personalizar todos estos valores a tu gusto:
+</p>
+<ul>
+    <li>
+        Identificador: Un ID de ejemplo.
+    </li>
+    <li>
+        Nombre: Tu nombre o uno genérico.
+    </li>
+    <li>
+        Email: Un correo como admin@admin.com.
+    </li>
+    <li>
+        Surname: El apellido del usuario.
+    </li>
+    <li>
+        Sitio Web: Una URL válida.
+    </li>
+</ul>
+<p id="p_1739823078982_264463">
+    Y tendremos:
+</p>
+<p>
+    <img src="/images/example/libros/fastapi/image25.png" alt="" title="" id="img_1739823078982_237216">
+</p>
+<p>
+    Figura 5-2 Dato ejemplo en el body con relaciones
+</p>
+<h2 id="heading-3-1768771972041-919">
+    Datos de Ejemplo en Parámetros y Body
+</h2>
+<p>
+    Además de definir ejemplos en el modelo, también podemos aplicarlos a otros parámetros como el Body, Path, Query, Header, Cookies, formularios o campos (fields).
+</p>
+<p>
+    La estructura es muy similar a la que ya conocemos, pero es importante acotar algo: si definimos un ejemplo a nivel del argumento del método, este sobrescribirá al que se encuentre definido a nivel del modelo.
+</p>
+<h3 id="heading-4-1768771972041-849">
+    Implementación de examples en el Parámetro
+</h3>
+<p>
+    Para implementarlo, la sintaxis es sencilla. Dentro del parámetro del método, añadimos la propiedad examples, la cual recibe una lista (array) con la data que queremos mostrar.
+</p>
+<pre><code class="language-python"># Ejemplo simplificado en un parámetro Body
+examples=[
+   {
+       "id": 4,
+       "name": "Hola Mundo",
+       "description": "des 2",
+       "status": "pending"
+   }
+]</code></pre>
+<p>
+    En este caso, cambié el ID y la descripción. Como aplicamos este cambio para el método PUT, al revisar la documentación interactiva verás que el PUT ahora toma estos nuevos datos en lugar de los del modelo.
+</p>
+<h2 id="heading-5-1768771972041-731">
+    Uso de openapi_examples para Múltiples Ejemplos
+</h2>
+<p>
+    Si queremos ofrecer un listado de opciones más claro en la documentación, podemos emplear el parámetro <strong>openapi_examples</strong>. Para ello, debemos estructurar los datos de una manera un poco más detallada que la anterior.
+</p>
+<h3 id="heading-6-1768771972041-363">
+    Estructura del Diccionario
+</h3>
+<p>
+    A diferencia del método simple, aquí utilizamos un diccionario donde cada clave representa un ejemplo. Dentro de cada ejemplo, definimos los siguientes campos:
+</p>
+<p>
+    Clave de identificación: Un nombre interno (ej. Example1).
+</p>
+<ul>
+    <li>
+        <strong>Summary</strong>: El título o etiqueta que aparecerá en el selector desplegable (el label de la opción).
+    </li>
+    <li>
+        <strong>Description</strong> (Opcional): Una explicación detallada del ejemplo.
+    </li>
+    <li>
+        <strong>Value</strong>: El diccionario con los datos reales que se enviarán en la petición.
+    </li>
+</ul>
+<p>
+    Vamos a definir ahora nuestros ejemplos personalizados:
+</p>
+<pre><code class="language-python">openapi_examples={
+   "Example1": {
+       "summary": "Primer ejemplo",
+       "value": {
+           "id": 1,
+           "name": "Tarea inicial",
+           "description": "Descripción del primer ejemplo"
+       }
+   },
+   "Example2": {
+       "summary": "Segundo ejemplo",
+       "value": {
+           "id": 4,
+           "name": "Otra tarea",
+           "description": "Hola mundo 2",
+           "tags": ["etiqueta 4"]
+       }
+   }
+}</code></pre>
+<h3 id="heading-7-1768771972041-265">
+    Verificación en el Selector
+</h3>
+<p>
+    Al guardar y recargar la documentación, notarás que ahora aparece un Select o menú desplegable.
+</p>
+<p>
+    Fíjate que el texto que definimos en el summary es el que se muestra en el listado. Al cambiar entre las opciones, verás cómo varía automáticamente la data del ejemplo que vas a utilizar. Si quieres agregar un tercer o cuarto escenario, simplemente debes duplicar la estructura dentro del diccionario.
+</p>
+<h2 id="heading-8-1768771972041-754">
+    Datos de ejemplos desde el argumento
+</h2>
+<p id="p_1739823078983_812612">
+    En este apartado, veremos cómo agregar los datos de ejemplo directamente desde los argumentos de las funciones de la API.
+</p>
+<p id="p_1739823078982_696351">
+    También podemos declarar los datos de ejemplo desde los métodos de la API:
+</p>
+<pre><code class="language-python">@task_router.put("/",status_code=status.HTTP_200_OK)
+def update(index: int, task: Task = Body(
+    examples=[
+                {
+                   "id" : 123,
+                    "name": "Salvar al mundo",
+                    "description": "Hola Mundo Desc",
+                    "status": 'PENDING',
+                    "tag":["tag 1", "tag 2"],
+                },
+                {
+                    "name": "Bar",
+                },
+                {
+                    "name": "Baz",
+                },
+            ],
+)):
+    ***</code></pre>
+<p id="p_1739823078983_176082">
+    También es posible definir un valor de ejemplo individual directamente en un campo Pydantic usando el parámetro `example` (singular):
+</p>
+<pre><code class="language-python">from pydantic import Field
+from typing import Optional
+
+class Task(MyBaseModel):
+    name: str = Field(example='MiTareaEjemplo') # Ejemplo de un solo valor
+    description: Optional[str] = Field(
+        "No description",
+        min_length=5,
+        example='Descripción detallada de la tarea.'
+    )
+    # Para múltiples ejemplos en un Field, se usaría json_schema_extra:
+    # tags: List[str] = Field(json_schema_extra={"examples": [["tag1", "tag2"], ["otro_tag"]]})
+</code></pre>
+<p id="p_1739823078983_503986">
+    Para que tome este valor, debes de comentar o remover el bloque de ejemplos definidos anteriormente.
+</p>
+<h3 id="heading-9-1768771972041-552">
+    Ejemplo simple
+</h3>
+<p>
+    Incluso desde las primitivas (como un campo de teléfono de tipo texto), podemos definir datos de ejemplo. Esto mismo lo podemos aplicar si el campo fuera un entero, un booleano o cualquier otro tipo simple que definamos; es decir, casos donde no estemos usando algo compuesto como el modelo de tareas, sino simplemente un texto, un número, etc.
+</p>
+<p id="p_1739823078983_192537">
+    Podemos declarar datos de prueba para los <strong>Body()</strong>, <strong>Path()</strong> y <strong>Query()</strong>; por ejemplo:
+</p>
+<pre><code class="language-python">@app.get("/ep_phone/{phone}") # +34 111 12-34-56
+def phone(phone: str = Path(pattern=r"^(\(?\+[\d]{1,3}\)?)\s?([\d]{1,5})\s?([\d][\s\.-]?){6,7}$", example="+34 111 12-34-56")):
+    return {"phone": phone}</code></pre>
+<p id="p_1739823078983_479747">
+    O
+</p>
+<pre><code class="language-python">@app.get("/e_phone/") # +34 111 12-34-56
+def phone(phone: str = Query(pattern=r"^(\(?\+[\d]{1,3}\)?)\s?([\d]{1,5})\s?([\d][\s\.-]?){6,7}$", example="+34 111 12-34-56")):
+    return {"phone": phone}</code></pre>
+<h3 id="heading-10-1768771972041-523">
+    Listado de ejemplos
+</h3>
+<p id="p_1739823078983_449764">
+    También es posible definir un listado de datos de ejemplos, para ello:
+</p>
+<p id="p_1739823078983_544787">
+    task.py
+</p>
+<pre><code class="language-python">@task_router.put("/", status_code=status.HTTP_200_OK)
+def update(index: int, task: Task = Body(
+    # examples=[
+    #     {
+    #         "id": 1234,
+    #         "name": "Salvar al mundo",
+    #         "description": "Hola Mundo Desc 2",
+    #         "tag":["tag 1", "tag 2"],
+    #     }
+    # ]
+    openapi_examples={
+        "example1": {
+            "summary": '1 Example',
+            "value": {
+                "id": 123,
+                "name": "Salvar al mundo",
+                "description": "Hola Mundo",
+                "tag": ["tag 1", "tag 4"],
+            }
+        },
+        "example2": {
+            "summary": '2 Example',
+            "value": {
+                "id": 1234,
+                "name": "Salvar al mundo",
+                "description": "Hola Mundo Desc 2",
+                "tag": ["tag 1", "tag 2"],
+            }
+        }
+    }
+)):</code></pre>
+<p id="p_1739823078983_312459">
+    En donde summary, corresponde al nombre del label del select:
+</p>
+<p>
+    <img src="/images/example/libros/fastapi/image26.png" alt="" title="" id="img_1739823078983_632403">
+</p>
+<p id="p_1739823078983_896963">
+    Figura 5-3 Dato ejemplo con SELECT
+</p>
+<p id="p_1739823078983_896963">
+    Código fuente del capítulo:
+</p>
+<p id="p_1739823078983_557980">
+    <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/url?q=https://github.com/libredesarrollo/curso-libro-fast-api-crud-task-1/releases/tag/v0.3&amp;sa=D&amp;source=editors&amp;ust=1739805208332243&amp;usg=AOvVaw3gN7-IDusUxHsRsa1sJceR" id="a_1739823078983_396990">https://github.com/libredesarrollo/curso-libro-fast-api-crud-task-1/releases/tag/v0.3</a>
+</p>
