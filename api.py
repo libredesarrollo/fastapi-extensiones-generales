@@ -13,6 +13,7 @@ from mylimiter import limiter_router
 from mylogging import logging_router
 from mycache import cache_router
 
+from fastapi_cache.backends.inmemory import InMemoryBackend
 
 from database.database import Base, engine, get_database_session
 from mycrud import MyCRUDRouter,SQLCRUDRouter, Category, Task, CategoryModel
@@ -29,7 +30,10 @@ async def lifespan(app: FastAPI):
     )
     
     # Inicializar FastAPI Cache con el backend de Redis
-    FastAPICache.init(RedisBackend(redis_instance), prefix="fastapi-cache")
+    # FastAPICache.init(RedisBackend(redis_instance), prefix="fastapi-cache")
+    
+    # Inicializar FastAPI Cache con el backend en Memoria
+    FastAPICache.init(InMemoryBackend(), prefix="fastapi-cache")
     
     # # Inicializar el limitador (usando la referencia al módulo si la clase falla)
     # await fastapi_limiter.FastAPILimiter.init(redis_instance)
@@ -63,8 +67,5 @@ app.include_router(
     MyCRUDRouter(schema=Task, prefix="/tasks", tags=["Tasks"])
 )
 app.include_router(
-    SQLCRUDRouter(schema=Category, 
-                  model=CategoryModel,
-                  get_db_func=get_database_session, 
-                  prefix="/categories", tags=["Categories"])
+    SQLCRUDRouter(schema=Category, model=CategoryModel,get_db_func=get_database_session, prefix="/categories", tags=["Categories"])
 )
