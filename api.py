@@ -9,9 +9,10 @@ from myuser import auth_router
 from myenv import env_router
 from mylimiter import limiter_router
 from mylogging import logging_router
-from mycrud import MyCRUDRouter, Category, Task
 
 
+from database.database import Base, engine, get_database_session
+from mycrud import MyCRUDRouter,SQLCRUDRouter, Category, Task, CategoryModel
 #uvicorn api:app --reload     
 
 @asynccontextmanager
@@ -34,8 +35,9 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+CategoryModel.metadata.create_all(bind=engine)
 #QUITAR SI USAS Alembic
-# Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 # @router.get('/hello')
 # def hello_world(db: Session = Depends(get_database_session)):
@@ -47,9 +49,12 @@ app.include_router(env_router, prefix='/config')
 app.include_router(limiter_router, prefix='/limiter')
 app.include_router(logging_router, prefix='/logging')
 
-app.include_router(
-    MyCRUDRouter(schema=Category, prefix="/categories", tags=["Categories"])
-)
+# app.include_router(
+#     MyCRUDRouter(schema=Category, prefix="/categories", tags=["Categories"])
+# )
 app.include_router(
     MyCRUDRouter(schema=Task, prefix="/tasks", tags=["Tasks"])
+)
+app.include_router(
+    SQLCRUDRouter(schema=Category, model=CategoryModel,get_db_func=get_database_session, prefix="/categories", tags=["Categories"])
 )
