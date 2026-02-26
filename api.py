@@ -3,7 +3,7 @@ from fastapi import FastAPI
 import redis.asyncio as redis
 # import fastapi_limiter
 from fastapi_cache import FastAPICache
-from fastapi_cache.backends.redis import RedisBackend
+# from fastapi_cache.backends.redis import RedisBackend
 
 # Importamos tus routers
 from myemail import email_router
