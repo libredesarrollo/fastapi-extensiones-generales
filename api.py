@@ -15,6 +15,7 @@ from mylogging import logging_router
 from mycrud import MyCRUDRouter, Category, Task
 from mystreaming import streaming_router
 
+from mycelery import celery_router
 from mycache import cache_router
 
 
@@ -65,6 +66,7 @@ app.include_router(limiter_router, prefix='/limiter')
 app.include_router(logging_router, prefix='/logging')
 
 app.include_router(streaming_router, prefix='/stream', tags=["Streaming"])
+app.include_router(celery_router, prefix='/celery', tags=["Celery"])
 
 app.include_router(cache_router, prefix='/cache')
 
@@ -78,3 +80,19 @@ app.include_router(
 app.include_router(
     SQLCRUDRouter(schema=Category, model=CategoryModel,get_db_func=get_database_session, prefix="/categories", tags=["Categories"])
 )
+
+#pip install "celery[redis]" fastapi uvicorn
+# Terminal 1 (La API):
+# uvicorn main:app --reload
+
+# Terminal 2 (El Worker):
+
+# celery -A mycelery.celery_app worker --loglevel=info
+
+
+# - -A (o --app): Es el "Argumento de Aplicación". Le dice a Celery: "Busca mi configuración aquí".
+# Haz un POST a http://127.0.0.1:8000/celery/run-task/Andres.
+# Recibirás un task_id inmediatamente.
+# Mira la Terminal 2, verás que el worker dice "Iniciando tarea...".
+# Espera 10 segundos.
+# Consulta http://127.0.0.1:8000/celery/status/{task_id} para ver el resultado "SUCCESS".
