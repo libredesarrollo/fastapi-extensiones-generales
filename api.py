@@ -80,19 +80,3 @@ app.include_router(
 app.include_router(
     SQLCRUDRouter(schema=Category, model=CategoryModel,get_db_func=get_database_session, prefix="/categories", tags=["Categories"])
 )
-
-#pip install "celery[redis]" fastapi uvicorn
-# Terminal 1 (La API):
-# uvicorn main:app --reload
-
-# Terminal 2 (El Worker):
-
-# celery -A mycelery.celery_app worker --loglevel=info
-
-
-# - -A (o --app): Es el "Argumento de Aplicación". Le dice a Celery: "Busca mi configuración aquí".
-# Haz un POST a http://127.0.0.1:8000/celery/run-task/Andres.
-# Recibirás un task_id inmediatamente.
-# Mira la Terminal 2, verás que el worker dice "Iniciando tarea...".
-# Espera 10 segundos.
-# Consulta http://127.0.0.1:8000/celery/status/{task_id} para ver el resultado "SUCCESS".
