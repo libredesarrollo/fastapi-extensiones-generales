@@ -10,6 +10,7 @@ from myenv import env_router
 from mylimiter import limiter_router
 from mylogging import logging_router
 from mycrud import MyCRUDRouter, Category, Task
+from mystreaming import streaming_router
 
 
 #uvicorn api:app --reload     
@@ -46,6 +47,7 @@ app.include_router(auth_router, prefix='/user')
 app.include_router(env_router, prefix='/config')
 app.include_router(limiter_router, prefix='/limiter')
 app.include_router(logging_router, prefix='/logging')
+app.include_router(streaming_router, prefix='/stream', tags=["Streaming"])
 
 app.include_router(
     MyCRUDRouter(schema=Category, prefix="/categories", tags=["Categories"])
